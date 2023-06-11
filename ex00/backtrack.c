@@ -4,7 +4,7 @@
 
 void	print_error(void)
 {
-	write(1, "Error\n", 6);
+	write(1, "Error\n  ", 6);
 }
 
 int	handle_args(int argc, char **argv, int sums[4][N])
@@ -13,9 +13,9 @@ int	handle_args(int argc, char **argv, int sums[4][N])
 	int	row;
 	int	column;
 
+    arg_iter = 0;
 	if (argc != 2)
 	{
-		printf("3");
 		print_error();
 		return -1;
 	}
@@ -30,7 +30,6 @@ int	handle_args(int argc, char **argv, int sums[4][N])
 		}
 		if (argv[1][N * 8 - 1] != '\0')
 		{
-			printf("2");
 			print_error();
 			return -1;
 		}
@@ -45,8 +44,8 @@ int	handle_args(int argc, char **argv, int sums[4][N])
 		}
 		else if (arg_iter % 2 != 1 || argv[1][arg_iter] != ' ')
 		{
-			printf("1");
 			print_error();
+
 			return -1;
 		}
 		arg_iter++;
@@ -66,39 +65,44 @@ void	print(int fields[N][N])
 	{
 		while (column < N)
 		{
-			temp = '0' + fields[row][column];
-			write (1, &temp, 1);
+            if (fields[row][column] >= 0 && fields[row][column] <= N)
+                temp = '0' + fields[row][column];
+            else
+                temp = '-';
+			//write (1, &temp, 1);
+            printf("%c", temp);
 			if (column != N - 1)
-				write(1, " ", 1);
+				//write(1, " ", 1);
+                printf(" ");
 			column++;
 		}
-		column = 0;
-		write(1, "\n", 1);
 		row++;
+		column = 0;
+		//write(1, "\n ", 1);
+        printf("\n");
 	}
+    //write(1, "\n", 1);
+    printf("\n");
 }
 
 int	is_safe_rn(int fields[N][N], int sums[4][N], int column, int row)
 {
 	if (0 != check_num_vertical(fields, fields[row][column])
 		|| 0 != check_num_horisontal(fields, fields[row][column])){
-		printf("Std check fail\n");
 		return -1;
 	}
-	if (column == 3){
+	if (column == N-1){
 		if(0 != check_left_to_righ(fields, sums, row)
 			|| 0 != check_right_to_left(fields, sums, row))
 		{
-			printf("col3 check fail\n");
 			return (-1);
 		}
 	}
-	if (row == 3)
+	if (row == N-1)
 	{
 		if ( 0 != check_top_to_bottom(fields, sums, column)
 			|| 0 != check_bottom_to_top(fields, sums, column))
 		{
-			printf("row3 check fail\n");
 			return (-1);
 		}
 	}
@@ -113,14 +117,14 @@ int	backtrack(int fields[N][N], int sums[4][N], int column, int row)
 		column = 0;
 		row++;
 	}
-	print (fields);
-	printf("\n\naaaaaaaaaaaa");
+	print(fields);
 
 	if(0 != is_safe_rn(fields, sums, column, row))
 		return -1;
-	if (row == 3 && column == 3)
+	if (row == N-1 && column == N-1)
 	{
-		printf("Done!\n");
+        //write(1, "Done\n", 5);
+        printf("Done \n");
 		return 0;
 	}
 	num = 1;
@@ -139,14 +143,16 @@ int	main(int argc, char **argv)
 {
 	int fields[N][N] = {0};
 	int sums[4][N];
+    int test[N][N] = {{1, 3, 2, 4, 5}};
 
 	if (0 != handle_args(argc, argv, sums))
 		return -1;
+    printf("Res %i\n", check_left_to_righ(test, sums, 0));
 	print(sums);
 	for(int i = 1; i<=N; i++){
 		fields[0][0] = i;
 		if (0 == backtrack(fields, sums, 0, 0)){
-			print(fields);
+			//print(fields);
 			return 0;
 		}
 	}
