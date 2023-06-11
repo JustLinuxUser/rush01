@@ -1,4 +1,4 @@
-#define N 5
+#define N 4
 
 void	zero_out_N_N(int arr[N][N], int x, int y)
 {
