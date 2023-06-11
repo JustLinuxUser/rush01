@@ -1,12 +1,77 @@
 #include "./check.c"
 #include <stdio.h>
+#include <unistd.h>
+
+void print_error(void)
+{
+    write(1, "Error\n", 6);
+}
+
+int handle_args(int argc, char **argv, int sums[4][N])
+{
+    int arg_iter;
+    int row;
+    int column;
+
+    if (argc != 2)
+    {
+        print_error();
+        return -1;
+    }
+    row = 0;
+    column = 0;
+    while (arg_iter < N*4*2 - 1)
+    {
+        if (argv[1][arg_iter] == '\0')
+        {
+            print_error();
+            return -1;
+        }
+        if (argv[1][N*8 - 1] != '\0')
+        {
+            print_error();
+            return -1;
+        }
+
+        if (arg_iter % 2 == 0 && argv[1][arg_iter] >= 49 && argv[1][arg_iter] < 49+N){
+           sums[row][column] = argv[1][arg_iter] - '0';
+           column++;
+           if (column == N){
+                column = 0;
+                row++;
+           }
+        }
+        else if (arg_iter % 2 != 1 || argv[1][arg_iter] != ' ')
+        {
+            print_error();
+            return -1;
+        }
+        arg_iter++;
+    }
+
+}
+
 void print(int fields[N][N])
 {
-    for(int i =0; i < 4; i++)
+    int row;
+    int column;
+    char temp;
+
+    row = 0;
+    column = 0;
+    while (row < N)
     {
-        for(int j = 0; j < 4; j++)
-            printf("%i ", fields[i][j]);
-        printf("\n");
+        while (column < N)
+        {
+            temp = '0' + fields[row][column];
+            write (1, &temp, 1);
+            if (column != N - 1)
+                write(1, " ", 1);
+            column++;
+        }
+        column = 0;
+        write(1, "\n", 1);
+        row++;
     }
 }
 
@@ -33,7 +98,7 @@ int is_safe_rn(int fields[N][N], int sums[4][N], int column, int row)
 	}
     return 0;
 }
-int backtrack(int fields[N][N], int sums[N][N], int column, int row)
+int backtrack(int fields[N][N], int sums[4][N], int column, int row)
 {
 	int success;
 	int num;
@@ -63,48 +128,18 @@ int backtrack(int fields[N][N], int sums[N][N], int column, int row)
 }
 int main(int argc, char **argv)
 {
-    int arg_iter;
-    int row;
-    int column;
     int fields[N][N] = {0};
-	int sums[N][N];
+	int sums[4][N];
 
-    if (argc != 2)
-        return -1;
-    row = 0;
-    column = 0;
-    while (arg_iter < N*4*2 - 1)
-    {
-        if (argv[1][arg_iter] == '\0')
-        {
-            return -1;
-        }
-        if (argv[1][N*8 - 1] != '\0')
-        {
-            return -1;
-        }
-
-        if (arg_iter % 2 == 0 && argv[1][arg_iter] >= 49 && argv[1][arg_iter] < 49+N){
-           sums[row][column] = argv[1][arg_iter] - '0';
-           column++;
-           if (column == N){
-                column = 0;
-                row++;
-           }
-        }else if (arg_iter % 2 != 1 || argv[1][arg_iter] != ' ')
-        {
-            return -1;
-        }
-        arg_iter++;
-    }
 
 
     print(sums);
-    for(int i = 1; i<=4; i++){
+    for(int i = 1; i<=N; i++){
         fields[0][0] = i;
         if (0 == backtrack(fields, sums, 0, 0)){
             print(fields);
-            break;
+            return 0;
         }
     }
+    print_error();
 }

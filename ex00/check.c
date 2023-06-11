@@ -1,4 +1,3 @@
-#include <stdio.h>
 #define N 4
 
 int check_left_to_righ(int fields[N][N], int sums[N][N], int row)
