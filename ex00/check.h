@@ -1,25 +1,25 @@
-#define N 4
+#define N 5
 
-int check_left_to_righ(int fields[N][N], int sums[N][N], int row)
+int	check_left_to_righ(int fields[N][N], int sums[N][N], int row)
 {
 	int column;
 	int current_can_see;
 	int highest;
 
-    current_can_see = 0;
-    highest = 0;
-    column = 0;
-    while (column < N)
-    {
-        if (fields[row][column] > highest)
-        {
-            highest = fields[row][column];
-            current_can_see++;
-        }
-        column++;
-    }
-    if (current_can_see != sums[2][row])
-        return (-1);
+	current_can_see = 0;
+	highest = 0;
+	column = 0;
+	while (column < N)
+	{
+		if (fields[row][column] > highest)
+		{
+			highest = fields[row][column];
+			current_can_see++;
+		}
+		column++;
+	}
+	if (current_can_see != sums[2][row])
+		return (-1);
 	return (0);
 }
 
@@ -29,68 +29,68 @@ int check_right_to_left(int fields[N][N], int sums[N][N], int row)
 	int current_can_see;
 	int highest;
 
-    current_can_see = 0;
-    highest = 0;
-    column = N - 1;
-    while (column >= 0)
-    {
-        if (fields[row][column] > highest)
-        {
-            highest = fields[row][column];
-            current_can_see++;
-        }
-        column--;
-    }
-    if (current_can_see != sums[3][row])
-        return (-1);
-    return (0);
+	current_can_see = 0;
+	highest = 0;
+	column = N - 1;
+	while (column >= 0)
+	{
+		if (fields[row][column] > highest)
+		{
+			highest = fields[row][column];
+			current_can_see++;
+		}
+		column--;
+	}
+	if (current_can_see != sums[3][row])
+		return (-1);
+	return (0);
 }
 
 int check_top_to_bottom(int fields[N][N], int sums[N][N], int column)
 {
 	int row;
 	int current_can_see;
-    int highest;
+	int highest;
 
-    current_can_see = 0;
-    highest = 0;
-    row = 0;
-    while (row < N)
-    {
-        if (fields[row][column] > highest)
-        {
-            highest = fields[row][column];
-            current_can_see++;
-        }
-        row++;
-    }
-    if (current_can_see != sums[0][column])
-        return (-1);
-    return (0);
+	current_can_see = 0;
+	highest = 0;
+	row = 0;
+	while (row < N)
+	{
+		if (fields[row][column] > highest)
+		{
+			highest = fields[row][column];
+			current_can_see++;
+		}
+		row++;
+	}
+	if (current_can_see != sums[0][column])
+		return (-1);
+	return (0);
 }
 
 int check_bottom_to_top(int fields[N][N], int sums[N][N], int column)
 {
 	int row;
 	int current_can_see;
-    int highest;
+	int highest;
 
-    current_can_see = 0;
-    highest = 0;
-    row = N - 1;
-    while (row >= 0)
-    {
-        if (fields[row][column] > highest)
-        {
-            highest = fields[row][column];
-            current_can_see++;
-        }
-        row--;
-    }
-    if (current_can_see != sums[1][column])
-        return (-1);
-    column++;
-    return (0);
+	current_can_see = 0;
+	highest = 0;
+	row = N - 1;
+	while (row >= 0)
+	{
+		if (fields[row][column] > highest)
+		{
+			highest = fields[row][column];
+			current_can_see++;
+		}
+		row--;
+	}
+	if (current_can_see != sums[1][column])
+		return (-1);
+	column++;
+	return (0);
 }
 
 int check_num_horisontal(int fields[N][N], int num)
