@@ -1,8 +1,8 @@
-#include "./check.c"
+#include "./check.h"
 #include <stdio.h>
 #include <unistd.h>
 
-void print_error(void)
+void    print_error(void)
 {
     write(1, "Error\n", 6);
 }
@@ -53,9 +53,9 @@ int handle_args(int argc, char **argv, int sums[4][N])
 
 void print(int fields[N][N])
 {
-    int row;
-    int column;
-    char temp;
+    int     row;
+    int     column;
+    char    temp;
 
     row = 0;
     column = 0;
